@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  api:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/school_management
+      - SECRET_KEY=your_secure_secret_key_change_in_production
+      - ADMIN_EMAIL=admin@school.com
+      - ADMIN_PASSWORD=adminpassword
+      - CREATE_SAMPLE_DATA=true
+      - BACKEND_CORS_ORIGINS=http://localhost:3000,http://frontend:3000
+    volumes:
+      - ./backend/app:/app/app
+      - ./backend/reports:/app/reports
+      - ./backend/logs:/app/logs
+    depends_on:
+      - db
+    command: >
+      bash -c "
+        python -m app.scripts.init_data &&
+        uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+      "
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+    depends_on:
+      - api
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+      - CHOKIDAR_USEPOLLING=true
+    command: npm start
+
+  db:
+    image: postgres:14
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=school_management
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
