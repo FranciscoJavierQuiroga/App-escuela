@@ -53,15 +53,59 @@ This project is a full-stack application for managing school-related operations.
 ### Prerequisites
 - Docker and Docker Compose
 - Node.js and npm/yarn
+- Vercel CLI (para despliegue)
 
-### Backend Setup
+### Desarrollo Local
+
+#### Backend Setup
 1. Navigate to the backend directory
 2. Run `docker-compose up -d` to start the backend and database
 
-### Frontend Setup
+#### Frontend Setup
 1. Navigate to the frontend directory
 2. Run `npm install` to install dependencies
 3. Run `npm start` to start the development server
+
+### Despliegue en Vercel
+
+#### Requisitos Previos
+- Cuenta en [Vercel](https://vercel.com)
+- [Vercel CLI](https://vercel.com/cli) instalado
+- [GitHub](https://github.com) o [GitLab](https://gitlab.com) para alojar el código
+
+#### Pasos para el Despliegue
+
+1. **Preparación del Repositorio**
+   - Sube tu código a un repositorio Git (GitHub, GitLab, etc.)
+
+2. **Despliegue del Frontend**
+   - Accede a tu cuenta de Vercel
+   - Selecciona "Import Project" y elige tu repositorio
+   - Configura el proyecto:
+     - Framework Preset: React
+     - Root Directory: `/frontend`
+     - Build Command: `npm run build`
+     - Output Directory: `build`
+   - En la sección de Variables de Entorno, configura:
+     - `REACT_APP_API_URL`: URL de tu backend (por ej. https://tu-app-backend.vercel.app/api)
+
+3. **Despliegue del Backend**
+   - Desde la interfaz de Vercel:
+     - Importa nuevamente el mismo repositorio
+     - Configura como:
+       - Framework Preset: Other
+       - Root Directory: `/`
+       - Build Command: (dejar vacío)
+       - Output Directory: (dejar vacío)
+   - En la sección de Variables de Entorno, configura todas las variables mencionadas en el archivo `.env.example`
+   - Para la base de datos, es recomendable utilizar un servicio gestionado como:
+     - [Supabase](https://supabase.com)
+     - [Neon](https://neon.tech)
+     - [Railway](https://railway.app)
+     - [ElephantSQL](https://www.elephantsql.com)
+
+4. **Configuración de Dominios Personalizados (Opcional)**
+   - En la configuración del proyecto en Vercel, puedes añadir dominios personalizados tanto para el frontend como para el backend.
 
 ## Features
 

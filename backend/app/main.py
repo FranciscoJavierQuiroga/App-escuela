@@ -64,6 +64,7 @@ app.include_router(teachers.router)
 app.include_router(courses.router)
 app.include_router(enrollments.router)
 app.include_router(grades.router)
+app.include_router(reports.router)  # Ensure this router is included
 
 @app.get("/")
 def root():
@@ -83,3 +84,6 @@ def health_check():
 
 if __name__ == "__main__":
     uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
+
+# For Vercel serverless deployment
+handler = app
